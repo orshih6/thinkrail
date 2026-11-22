@@ -54,6 +54,10 @@ import type {
 	ProviderStatusReport,
 	ProviderWarning,
 	PrPreview,
+	PullRequestFilter,
+	PullRequestPage,
+	PullRequestSizeEntry,
+	PullRequestSummary,
 	ResourceHistoryCursor,
 	ResourceHistoryPage,
 	ResourceKind,
@@ -145,7 +149,8 @@ export type TemplateReadLocation =
 	| { projectId: string; workspaceId?: never }
 	| { workspaceId?: never; projectId?: never };
 
-export const PROTOCOL_VERSION = 129;
+export const PROTOCOL_VERSION = 130;
+export const PULL_REQUEST_REVIEW_PROTOCOL_VERSION = 130;
 export const CHAT_ATTACHMENTS_PROTOCOL_VERSION = 129;
 export const ARTIFACT_OUTPUTS_PROTOCOL_VERSION = 128;
 export const SUBAGENT_CATALOG_PROTOCOL_VERSION = 127;
@@ -463,6 +468,9 @@ export const WS_METHODS = {
 	prReady: "pr.ready",
 	prMerge: "pr.merge",
 	prReopen: "pr.reopen",
+	prList: "pr.list",
+	prGet: "pr.get",
+	prSizes: "pr.sizes",
 	fsReadDir: "fs.readDir",
 	fsReadFile: "fs.readFile",
 	fsCopy: "fs.copy",
@@ -1138,6 +1146,15 @@ export interface WsMethodMap {
 	"pr.reopen": {
 		params: { workspaceId: string; branch: string; number: number };
 		result: Ack;
+	};
+	"pr.list": {
+		params: { projectId: string; filter: PullRequestFilter; query?: string; cursor?: string };
+		result: PullRequestPage;
+	};
+	"pr.get": { params: { projectId: string; number: number }; result: PullRequestSummary | null };
+	"pr.sizes": {
+		params: { projectId: string; numbers: number[] };
+		result: PullRequestSizeEntry[];
 	};
 	"pr.open": {
 		params: {

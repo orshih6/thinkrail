@@ -73,6 +73,7 @@ import {
 	PROJECT_TRUST_PROTOCOL_VERSION,
 	PROTOCOL_VERSION,
 	PROVIDER_WARNINGS_PROTOCOL_VERSION,
+	PULL_REQUEST_REVIEW_PROTOCOL_VERSION,
 	QUESTION_PANEL_PROTOCOL_VERSION,
 	RESOURCE_HISTORY_PROTOCOL_VERSION,
 	RESOURCE_META_PROTOCOL_VERSION,
@@ -419,6 +420,15 @@ test("the question panel height setting is pinned to v114", () => {
 test("extension editor text is pinned to v115", () => {
 	expect(PROTOCOL_VERSION).toBeGreaterThanOrEqual(EXTENSION_EDITOR_TEXT_PROTOCOL_VERSION);
 	expect(EXTENSION_EDITOR_TEXT_PROTOCOL_VERSION).toBe(115);
+});
+
+test("pull request review methods are pinned to v130", () => {
+	expect(PROTOCOL_VERSION).toBe(130);
+	expect(PULL_REQUEST_REVIEW_PROTOCOL_VERSION).toBe(130);
+	expect(PULL_REQUEST_REVIEW_PROTOCOL_VERSION).toBeGreaterThan(CHAT_ATTACHMENTS_PROTOCOL_VERSION);
+	expect(WS_METHODS.prList).toBe("pr.list");
+	expect(WS_METHODS.prGet).toBe("pr.get");
+	expect(WS_METHODS.prSizes).toBe("pr.sizes");
 });
 
 test("turning off server-side fallback is pinned to v126", () => {
